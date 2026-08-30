@@ -1,0 +1,61 @@
+name: Build UI-Utils Forge
+
+on:
+  push:
+    branches: [ forge-1.20.1, main ]
+  pull_request:
+    branches: [ forge-1.20.1, main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+    
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    
+    - name: Build with Gradle
+      run: ./gradlew build
+    
+    - name: Upload Build Artifacts
+      if: success()
+      uses: actions/upload-artifact@v3
+      with:
+        name: UI-Utils-Forge-Build
+        path: build/libs/
+        retention-days: 30
+    
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: UI-Utils Forge ${{ github.ref }}
+        body: |
+          ## UI-Utils Forge 1.20.1 Release
+          
+          Automated build for Forge 1.20.1
+        draft: false
+        prerelease: false
+    
+    - name: Upload Release Asset
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./build/libs/ui_utils_forge-*.jar
+        asset_name: ui_utils_forge-${{ github.ref }}.jar
+        asset_content_type: application/java-archive
