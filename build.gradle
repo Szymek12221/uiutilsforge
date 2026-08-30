@@ -1,0 +1,86 @@
+plugins {
+    id 'eclipse'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+}
+
+version = '1.20.1-' + project.mod_version
+group = project.maven_group
+archivesBaseName = project.archives_base_name
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+minecraft {
+    mappings channel: project.mcp_channel, version: project.mcp_version
+    
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.level.root', 'info'
+            args '--username=Dev'
+            mods {
+                uiutilsforge {
+                    source sourceSets.main
+                }
+            }
+        }
+        server {
+            workingDirectory project.file('run/server')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.level.root', 'info'
+            mods {
+                uiutilsforge {
+                    source sourceSets.main
+                }
+            }
+        }
+        gameTestServer {
+            workingDirectory project.file('run/gametestserver')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.level.root', 'info'
+            mods {
+                uiutilsforge {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {
+    mavenLocal()
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
+}
+
+jar {
+    manifest {
+        attributes([
+            'Specification-Title'      : 'UI Utils Forge',
+            'Specification-Vendor'     : 'Coderx_Gamer & MrBreakNFix',
+            'Specification-Version'    : '1',
+            'Implementation-Title'     : project.name,
+            'Implementation-Version'   : project.jar.archiveVersion,
+            'Implementation-Vendor'    : 'Coderx_Gamer & MrBreakNFix',
+            'Implementation-Timestamp' : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "file:///${project.projectDir}/mcmodsrepo"
+        }
+    }
+}
