@@ -1,0 +1,42 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="CC BY-NC-SA 4.0"
+showAsResourcePack=false
+updateJSONURL=""
+
+[[mods]]
+modId="uiutilsforge"
+namespace="uiutilsforge"
+version="${file.jarVersion}"
+displayName="UI Utils Forge"
+displayURL="https://github.com/Szymek12221/uiutilsforge"
+logoFile="assets/uiutilsforge/logo.png"
+credits="Original mod by Coderx-Gamer, Forge port by Szymek12221"
+authors="Coderx-Gamer, Szymek12221"
+description="""
+A powerful debugging mod for UI testing and packet manipulation.
+
+Features:
+- Close GUI without packet
+- De-sync GUI
+- Send/Delay packets controls
+- Save GUI state
+- Fabricate custom packets
+- GUI title JSON copy
+- Chat input in GUI
+- Bypass resource pack requirements
+"""
+
+[[dependencies.uiutilsforge]]
+    modId="forge"
+    mandatory=true
+    versionRange="[47,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.uiutilsforge]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1]"
+    ordering="NONE"
+    side="BOTH"
