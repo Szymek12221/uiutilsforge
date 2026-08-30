@@ -2,6 +2,7 @@ plugins {
     id 'eclipse'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'org.spongepowered.mixin' version '0.7.+'
 }
 
 version = '1.20.1-' + project.mod_version
@@ -13,14 +14,20 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 minecraft {
     mappings channel: project.mcp_channel, version: project.mcp_version
     
+    accessTransformers {
+        file('src/main/resources/ui_utils_forge.accesswidener')
+    }
+    
     runs {
         client {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.level.root', 'info'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', '${project.buildDir}/createSrgToMcp/output.srg'
             args '--username=Dev'
             mods {
-                uiutilsforge {
+                ui_utils_forge {
                     source sourceSets.main
                 }
             }
@@ -30,7 +37,7 @@ minecraft {
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.level.root', 'info'
             mods {
-                uiutilsforge {
+                ui_utils_forge {
                     source sourceSets.main
                 }
             }
@@ -40,7 +47,7 @@ minecraft {
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.level.root', 'info'
             mods {
-                uiutilsforge {
+                ui_utils_forge {
                     source sourceSets.main
                 }
             }
@@ -58,16 +65,19 @@ dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 }
 
+mixinConfigs = [ "ui_utils_forge.mixins.json" ]
+
 jar {
     manifest {
         attributes([
             'Specification-Title'      : 'UI Utils Forge',
-            'Specification-Vendor'     : 'Coderx_Gamer & MrBreakNFix',
+            'Specification-Vendor'     : 'Coderx_Gamer, MrBreakNFix, Szymek12221',
             'Specification-Version'    : '1',
             'Implementation-Title'     : project.name,
             'Implementation-Version'   : project.jar.archiveVersion,
-            'Implementation-Vendor'    : 'Coderx_Gamer & MrBreakNFix',
-            'Implementation-Timestamp' : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            'Implementation-Vendor'    : 'Coderx_Gamer, MrBreakNFix, Szymek12221',
+            'Implementation-Timestamp' : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            'MixinConfigs'             : 'ui_utils_forge.mixins.json'
         ])
     }
 }

@@ -8,8 +8,8 @@ version="${file.jarVersion}"
 displayName="UI Utils"
 displayURL="https://ui-utils.com"
 logoFile=""
-authors="Coderx_Gamer, MrBreakNFix"
-description="Plugin debugging mod for Minecraft Forge"
+authors="Coderx_Gamer, MrBreakNFix, Szymek12221"
+description="Plugin debugging mod for Minecraft Forge. Allows you to manipulate and inspect GUI packets and inventory interactions."
 
 [[dependencies.ui_utils_forge]]
     modId="forge"

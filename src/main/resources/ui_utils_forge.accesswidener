@@ -1,0 +1,3 @@
+public com/ui_utils_forge/client/MainClientForge createFabricatePacketFrame(Lnet/minecraft/client/Minecraft;)V
+public com/ui_utils_forge/client/MainClientForge createClickSlotPacketFrame(Lnet/minecraft/client/Minecraft;)V
+public com/ui_utils_forge/client/MainClientForge createButtonClickPacketFrame(Lnet/minecraft/client/Minecraft;)V
