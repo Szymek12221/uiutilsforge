@@ -1,47 +1,28 @@
-name: Build UI-Utils Forge
+name: Build Mod
 
 on:
   push:
-    branches: [ forge-1.20.1, main ]
+    branches: [ main ]
   pull_request:
-    branches: [ forge-1.20.1, main ]
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: gradle
-    
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    
-    - name: Build with Gradle
-      run: ./gradlew build
-    
-    - name: Upload Build Artifacts
-      if: success()
-      uses: actions/upload-artifact@v4
-      with:
-        name: UI-Utils-Forge-Build
-        path: build/libs/
-        retention-days: 30
-    
-    - name: Create Release and Upload Assets
-      if: startsWith(github.ref, 'refs/tags/')
-      uses: softprops/action-gh-release@v1
-      with:
-        body: |
-          ## UI-Utils Forge 1.20.1 Release
-          
-          Automated build for Forge 1.20.1
-        files: build/libs/ui_utils_forge-*.jar
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v3
+      
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      
+      - name: Build with Gradle
+        run: ./gradlew build
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ui-utils-forge
+          path: build/libs/
